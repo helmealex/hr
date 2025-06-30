@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"hr/internal/api"
 	"hr/internal/config"
 	"hr/internal/persistence"
+	"hr/internal/service"
 	"log/slog"
 	"os"
 )
@@ -28,7 +30,7 @@ func Run() error {
 		return err
 	}
 
-	_, err = persistence.New(
+	db, err := persistence.New(
 		logger,
 		&config.DBConfig,
 	)
@@ -37,5 +39,16 @@ func Run() error {
 		return err
 	}
 
-	return nil
+	service := service.New(
+		logger,
+		db,
+	)
+
+	api := api.New(
+		service,
+		logger,
+		&config.APIConfig,
+	)
+
+	return api.Start()
 }

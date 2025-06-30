@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"hr/internal/api"
 	"hr/internal/persistence"
 
 	"github.com/caarlos0/env/v11"
@@ -9,7 +10,8 @@ import (
 )
 
 type Config struct {
-	DBConfig persistence.DBConfig `envPrefix:"DB_"`
+	DBConfig  persistence.Config `envPrefix:"DB_"`
+	APIConfig api.Config         `envPrefix:"API_"`
 }
 
 func Load() (*Config, error) {
