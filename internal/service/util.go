@@ -46,6 +46,7 @@ func candidatePersistenceToApiResponse(candidate *persistenceModel.Candidate) ap
 		ID:                       candidate.ID,
 		Name:                     candidate.Name,
 		Email:                    candidate.Email,
+		JobID:                    candidate.JobID,
 		Phone:                    candidate.Phone,
 		ApplicationDate:          candidate.ApplicationDate,
 		Recruiter:                candidate.Recruiter,

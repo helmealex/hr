@@ -98,5 +98,6 @@ func (db *DB) GetCandidateByID(id uint) (*model.Candidate, error) {
 	if err := db.connection.First(&candidate, id).Error; err != nil {
 		return nil, err
 	}
+
 	return &candidate, nil
 }

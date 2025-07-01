@@ -7,6 +7,7 @@ type CandidateResponse struct {
 	Name                     string     `json:"name"`
 	Email                    string     `json:"email"`
 	Phone                    string     `json:"phone"`
+	JobID                    uint       `json:"job_id"`
 	ApplicationDate          *time.Time `json:"application_date"`
 	Recruiter                string     `json:"recruiter"`
 	CurrentStatus            string     `json:"current_status"`
