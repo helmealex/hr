@@ -51,6 +51,28 @@ func (db *DB) CreateJob(
 	return nil
 }
 
+func (db *DB) GetJobs(withCandidates bool) ([]model.Job, error) {
+	var jobs []model.Job
+	tx := db.connection
+	if withCandidates {
+		tx = tx.Preload("Candidates") //TODO: replace with candidates count
+	}
+	if err := tx.Find(&jobs).Error; err != nil {
+		return nil, err
+	}
+
+	return jobs, nil
+}
+
+func (db *DB) GetJobByID(id uint) (*model.Job, error) {
+	var job model.Job
+
+	if err := db.connection.Preload("Candidates").First(&job, id).Error; err != nil {
+		return nil, err
+	}
+	return &job, nil
+}
+
 func (db *DB) CreateCandidate(
 	candidate *model.Candidate,
 ) error {
@@ -61,19 +83,6 @@ func (db *DB) CreateCandidate(
 	return nil
 }
 
-func (db *DB) GetJobs(withCandidates bool) ([]model.Job, error) {
-	var jobs []model.Job
-	tx := db.connection
-	if withCandidates {
-		tx = tx.Preload("Candidates")
-	}
-	if err := tx.Find(&jobs).Error; err != nil {
-		return nil, err
-	}
-
-	return jobs, nil
-}
-
 func (db *DB) GetCandidates() ([]model.Candidate, error) {
 	var candidates []model.Candidate
 	if err := db.connection.Find(&candidates).Error; err != nil {
@@ -81,4 +90,13 @@ func (db *DB) GetCandidates() ([]model.Candidate, error) {
 	}
 
 	return candidates, nil
+}
+
+func (db *DB) GetCandidateByID(id uint) (*model.Candidate, error) {
+	var candidate model.Candidate
+
+	if err := db.connection.First(&candidate, id).Error; err != nil {
+		return nil, err
+	}
+	return &candidate, nil
 }

@@ -36,6 +36,14 @@ func New(
 func (s *Server) registerRoutes() {
 	s.router.Route("/jobs", func(r chi.Router) {
 		r.Get("/", s.getJobs)
+		r.Post("/", s.createJob)
+		r.Get("/{id}", s.getJobByID)
+	})
+
+	s.router.Route("/candidates", func(r chi.Router) {
+		r.Get("/", s.getCandidates)
+		r.Post("/", s.createCandidate)
+		r.Get("/{id}", s.getCandidateByID)
 	})
 }
 
