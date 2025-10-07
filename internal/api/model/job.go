@@ -23,3 +23,16 @@ type Job struct {
 	FocusRecruiter     string `json:"focus_recruiter"`
 	AdditionalComments string `json:"additional_comments"`
 }
+
+/*
+{
+  "title": "Software Engineer",
+  "level": "Senior",
+  "local_hiring_manager": "Jane Doe",
+  "de_owner": "John Smith",
+  "status": "open",
+  "head_count_status": "Approved",
+  "focus_recruiter": "Alice Johnson",
+  "additional_comments": "Looking for a candidate with strong Go experience."
+}
+*/
