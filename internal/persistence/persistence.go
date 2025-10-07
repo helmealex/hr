@@ -101,3 +101,34 @@ func (db *DB) GetCandidateByID(id uint) (*model.Candidate, error) {
 
 	return &candidate, nil
 }
+
+func (db *DB) GetVacancies() ([]model.VacancyReport, error) {
+	vacancyResult := []model.VacancyReport{}
+
+	err := db.connection.Model(&model.Job{}).
+		Select("level, count(*) as count").
+		Where("status = ?", "open").
+		Group("level").
+		Scan(&vacancyResult).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return vacancyResult, nil
+}
+
+func (db *DB) GetApplicantsTotal() ([]model.ApplicantReport, error) {
+	applicantResult := []model.ApplicantReport{}
+
+	err := db.connection.Model(&model.Candidate{}).
+		Select("job_id, jobs.title, count(*) as count").
+		Joins("JOIN jobs ON candidates.job_id = jobs.id").
+		Where("jobs.status = ?", "open").
+		Group("job_id, jobs.title").
+		Scan(&applicantResult).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return applicantResult, nil
+}

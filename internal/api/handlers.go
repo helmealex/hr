@@ -122,3 +122,22 @@ func (s *Server) getCandidateByID(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write(jsonResp)
 }
+
+func (s *Server) getReport(w http.ResponseWriter, r *http.Request) {
+	report, err := s.service.GetReport()
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to generate report: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	jsonResp, err := json.Marshal(report)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to marshal report: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	_, err = w.Write(jsonResp)
+}

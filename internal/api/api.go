@@ -45,6 +45,12 @@ func (s *Server) registerRoutes() {
 		r.Post("/", s.createCandidate)
 		r.Get("/{id}", s.getCandidateByID)
 	})
+
+	s.router.Get("/report", s.getReport)
+
+	s.router.Get("/dashboard", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "../test.html")
+	})
 }
 
 func (s *Server) Start() error {

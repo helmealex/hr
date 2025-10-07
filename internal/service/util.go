@@ -85,3 +85,27 @@ func candidateApiToPersistence(candidate apiModel.Candidate) *persistenceModel.C
 		AdditionalComments:       candidate.AdditionalComments,
 	}
 }
+
+func reportPersistenceToApiResponse(report persistenceModel.Report) *apiModel.ReportResponse {
+	vacancies := make([]apiModel.VacancyReportResponse, 0)
+	for _, v := range report.TotalVacancies {
+		vacancies = append(vacancies, apiModel.VacancyReportResponse{
+			Level: v.Level,
+			Count: v.Count,
+		})
+	}
+
+	applicants := make([]apiModel.ApplicantReportResponse, 0)
+	for _, a := range report.TotalApplicants {
+		applicants = append(applicants, apiModel.ApplicantReportResponse{
+			JobID:    a.JobID,
+			Count:    a.Count,
+			JobTitle: a.Title,
+		})
+	}
+
+	return &apiModel.ReportResponse{
+		TotalVacancies:  vacancies,
+		TotalApplicants: applicants,
+	}
+}

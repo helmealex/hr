@@ -3,6 +3,7 @@ package service
 import (
 	apiModel "hr/internal/api/model"
 	"hr/internal/persistence"
+	"hr/internal/persistence/model"
 	"log/slog"
 	"strconv"
 )
@@ -98,4 +99,25 @@ func (s *Service) GetCandidateByID(id string) (*apiModel.CandidateResponse, erro
 	candidateResponse := candidatePersistenceToApiResponse(candidate)
 
 	return &candidateResponse, nil
+}
+
+func (s *Service) GetReport() (*apiModel.ReportResponse, error) {
+	vacancies, err := s.db.GetVacancies()
+	if err != nil {
+		return nil, err
+	}
+
+	applicants, err := s.db.GetApplicantsTotal()
+	if err != nil {
+		return nil, err
+	}
+
+	persistenceReport := model.Report{
+		TotalVacancies:  vacancies,
+		TotalApplicants: applicants,
+	}
+
+	reportResponse := reportPersistenceToApiResponse(persistenceReport)
+
+	return reportResponse, nil
 }
